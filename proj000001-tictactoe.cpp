@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int getNumber (char t[], int p, int &u){
+int getNumber (char b[], int p, int &u){
     char s[256];
     int n;
 
@@ -21,35 +21,35 @@ int getNumber (char t[], int p, int &u){
         }
 
         n = s[0] - 49;
-        if (t[n]=='X' || t[n]=='O'){
+        if (b[n]=='X' || b[n]=='O'){
             cout << "Position occupied! Please try again : ";
             continue;
         }
 
-        t[n] = (p==1) ? 'X' : 'O';
+        b[n] = (p==1) ? 'X' : 'O';
         u -= n;
         return n;
     }
 }
 
-bool isWin (char t[], int n) {
+bool isWin (char b[], int n) {
     int i, j;
 
     i = n / 3 * 3; // Horizontal Win
     j = n % 3;     // Vertical Win
 
-    if ((t[i] == t[i+1] && t[i] == t[i+2]) ||
-        (t[j] == t[j+3] && t[j] == t[j+6])) return true;
+    if ((b[i] == b[i+1] && b[i] == b[i+2]) ||
+        (b[j] == b[j+3] && b[j] == b[j+6])) return true;
 
     // Check for diagonal win
     if (!(n%2) &&
-        ((t[0] == t[4] && t[4] == t[8]) ||
-         (t[2] == t[4] && t[4] == t[6])) ) return true;
+        ((b[0] == b[4] && b[4] == b[8]) ||
+         (b[2] == b[4] && b[4] == b[6])) ) return true;
 
     return false;
 }
 
-void printBoard (char t[]) {
+void printBoard (char b[]) {
     int i, j;
 
     for (i=0; i<=6; i+=3){
@@ -57,7 +57,7 @@ void printBoard (char t[]) {
              << "     |     |     " << endl;
 
         for (j=0; j<=2; j++){
-            cout << "  " << t[j+i] << "  ";
+            cout << "  " << b[j+i] << "  ";
             if (j!=2) cout << "|";
             }
         cout << endl << "     |     |     " << endl;
@@ -65,23 +65,24 @@ void printBoard (char t[]) {
     cout << endl;
 }
 
+/* *************************************************************************************************** */
 int main (){
-    char tac[9], start  [30];
+    char board[9], start  [30];
     int number, turn, unoccupied, player, i;
 
  do {
     cout << "Tic-Tac-Toe !" << endl << "Player 1 (X) VS Player 2 (O)" << endl;
-    for (i=0; i<9; i++) tac[i] = 49 + i;
-    printBoard (tac);
+    for (i=0; i<9; i++) board[i] = 49 + i;
+    printBoard (board);
 
     for (turn=1, unoccupied=36; turn <=8; turn++){
         player = (turn%2) ? 1 : 2;
         cout << "Player " << player << ", please enter a number : ";
-        number = getNumber (tac, player, unoccupied);
-        printBoard (tac);
+        number = getNumber (board, player, unoccupied);
+        printBoard (board);
 
         if (turn>4) // Check for win only after 4th turn
-            if (isWin (tac, number)) {
+            if (isWin (board, number)) {
                 cout << "Player " << player << " wins !" << endl;
                 break;
             }
@@ -89,10 +90,10 @@ int main (){
 
     if (turn==9){ // Automatically fill in the entry on the 9th turn
         cout << "Player 1 enters "<< (unoccupied+1) << endl;
-        tac [unoccupied] = 'X';
-        printBoard (tac);
+        board [unoccupied] = 'X';
+        printBoard (board);
 
-        if (isWin (tac, unoccupied))
+        if (isWin (board, unoccupied))
             cout << "Player 1 wins !" << endl;
         else cout << "It's a draw ..." << endl;
         }
